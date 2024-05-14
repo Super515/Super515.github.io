@@ -1,59 +1,29 @@
+
 <!DOCTYPE html>
-<html>
-<head>
-    <style type="text/css">
-        #boxA, #boxB {
-            float:left;padding:10px;margin:10px;-moz-user-select:none;
-        }
-        #boxA { background-color: #0e2e5b; color:white; width:140px; height:140px;  }
-        #boxB { background-color: #b42530; color:white; width:200px; height:200px; }
-    </style>
-    <script type="text/javascript">
-        function dragStart(ev) {
-            // Create a new image element
-            var img = new Image();
-            img.src = "TestDD1.svg"; // Set the image source
-            img.width = 50;
-            img.height = 50;
+<html lang="en">
+	<head>	
+		<title>Test 4: setData() and getData()</title>
+		<script type="text/javascript" src="./js/sprintf.js"></script>
+		<script type="text/javascript" src="./js/EventHelpers.js"></script>
+		<script type="text/javascript" src="./js/DragDropHelpers.js"></script>
+		
+		<script type="text/javascript" src="./script.js"></script>
+		
+		<link rel="stylesheet" type="text/css" media="screen" href="./css/style.css" />
+		
+	</head>
+	<body>
+		<center>
+			<h2>Simple drag and drop</h2>
+			<div>The blue box can be dragged into the red one.</div>
+			<br>
+      <div id="boxA" draggable="true" >
+        <p>Drag this</p>
+        <img src="TestDD1.svg" width="50" height="50">
+      </div>
 
-            // Set the custom drag image
-            ev.dataTransfer.setDragImage(img, 0, 0);
-
-            // Set data to be transferred
-            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-
-            // Set effectAllowed
-            ev.dataTransfer.effectAllowed = 'move';
-
-            return true;
-        }
-
-        function dragEnter(ev) {
-            ev.preventDefault();
-            return true;
-        }
-
-        function dragOver(ev) {
-            return false;
-        }
-
-        function dragDrop(ev) {
-            var src = ev.dataTransfer.getData("Text");
-            ev.target.appendChild(document.getElementById(src));
-            ev.stopPropagation();
-            return false;
-        }
-    </script>
-</head>
-<body>
-    <center>
-        <h2>Simple drag and drop</h2>
-        <div>The blue box can be dragged into the red one.</div>
-        <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
-            <p>Drag this</p>
-            <img src="TestDD1.svg" width="50" height="50">
-        </div>
-        <div id="boxB" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">And drop it here</div>
+		<!-- <img draggable="true" src="TestDD1.svg" alt="George Harrison" /> -->
+		  <div id="dropTarget"><span>And drop it here</span></div>
     </center>
-</body>
+	</body>
 </html>
