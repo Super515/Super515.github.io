@@ -77,6 +77,9 @@ iframe {
 
 img {
   width: 100px;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-window-dragging: no-drag;
 }
 
 #boxA {
