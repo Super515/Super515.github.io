@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draggable Element with Custom Ghost Image</title>
+  <style>
+    #draggable {
+      width: 100px;
+      height: 300px;
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      line-height: 100px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      opacity: 1; /* Ensure the original component's opacity remains 1 */
+    }
+
+    /* Style for the custom ghost image */
+    #ghostImage {
+      position: absolute;
+      width: 100px;
+      height: 300px;
+      background-color: #007bff; /* Set background color for the ghost image */
+      color: white;
+      text-align: center;
+      line-height: 100px;
+      display: none;
+      pointer-events: none; /* Ensure the ghost image doesn't interfere with dragging */
+    }
+    body{
+      height:50vh;
+      background-image: repeating-linear-gradient(45deg, black, transparent 100px);
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="draggable" draggable="true" >
+    <p>Drag this</p>
+    <img src="TestDD1.svg" width="50" height="50">
+  </div>
+
+  <div id="ghostImage"></div>
+
+  <script>
+    const draggableElement = document.getElementById('draggable');
+    const ghostImage = document.getElementById('ghostImage');
+
+    draggableElement.addEventListener('dragstart', function(event) {
+      // Hide the default drag image
+      // event.dataTransfer.setDragImage(new Image(), 0, 0);
+      // Show the ghost image
+      // ghostImage.textContent = draggableElement.textContent;
+      // ghostImage.style.display = 'block';
+      event.dataTransfer.setData("text", `<div id="draggable" draggable="true" >
+    <p>Drag this</p>
+    <img src="TestDD1.svg" width="50" height="50">
+  </div>`)
+
+      // Hide the original component
+      draggableElement.style.opacity = '0';
+    });
+
+    draggableElement.addEventListener('drag', function(event) {
+      // Update the position of the ghost image as the mouse moves
+      // ghostImage.style.left = `${event.clientX - 50}px`; // Adjust for centering
+      // ghostImage.style.top = `${event.clientY - 50}px`; // Adjust for centering
+      document.querySelector("#draggable").style.left=event.clientX
+      console.log(event.clientX)
+    });
+
+    draggableElement.addEventListener('dragend', function(event) {
+      // Show the original component
+      draggableElement.style.opacity = '1';
+
+      // Hide the ghost image
+      ghostImage.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

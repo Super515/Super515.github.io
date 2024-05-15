@@ -28,17 +28,6 @@ div#toDrag {
 }
 
 #dropTarget {
-  /* font-size: .9em;
-	font-family: "MS Sans Serif", sans;
-	height: 170px;
-	margin-top: 2em;
-	
-	/* 
-	 * Must be relative or absolute in order for 
-	 * DragDropHelpers.getEventCoords() to work correctly in Firefox. 
-	 */
-  /* position: relative;  */
-
   background-color: #b42530;
   color: white;
   width: 200px;
@@ -86,6 +75,7 @@ img {
   background-color: #0e2e5b;
   color: white;
   width: 140px;
+  opacity: 1 !important;
   height: 140px;
 }
 

@@ -1,29 +1,74 @@
+<html>
+   <head>
+      <style type="text/css">
+         #boxA, #boxB {
+            float:left;padding:10px;margin:10px;-moz-user-select:none;
+         }
+         #boxA { background-color: #0e2e5b; color:white; width:140px; height:140px; top: 100px; left: 260px;}
+         #boxB { background-color: #b42530; color:white; width:200px; height:200px;}
+         img{
+            user-select: none;
+            -webkit-user-drag: none;
+            -moz-window-dragging: no-drag;
+         }
+      </style>
+   </head>
+   <body>
+      <center>
+         <h2>Simple drag and drop</h2>
+         <div>The blue box can be dragged into the red one.</div>
+         <div id="boxA" style="position: fixed;" draggable="true">
+            <p>Drag this</p>
+            <img src="TestDD1.svg" width="50" height="50">
+         </div>
+         <div id="boxB"  ondragover="alowDrop(event)" >And drop it here</div>
+      </center>
+   </body>
+   <script>
+      
 
-<!DOCTYPE html>
-<html lang="en">
-	<head>	
-		<title>Test 4: setData() and getData()</title>
-		<script type="text/javascript" src="./js/sprintf.js"></script>
-		<script type="text/javascript" src="./js/EventHelpers.js"></script>
-		<script type="text/javascript" src="./js/DragDropHelpers.js"></script>
-		
-		<script type="text/javascript" src="./script.js"></script>
-		
-		<link rel="stylesheet" type="text/css" media="screen" href="./css/style.css" />
-		
-	</head>
-	<body>
-		<center>
-			<h2>Simple drag and drop</h2>
-			<div>The blue box can be dragged into the red one.</div>
-			<br>
-      <div id="boxA" draggable="true" >
-        <p>Drag this</p>
-        <img src="TestDD1.svg" width="50" height="50">
-      </div>
+      document.querySelector("#boxA").addEventListener("dragstart", function( event ) {
+         event.dataTransfer.setData("Text", "sss")
+         var img = new Image();
+         img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+         event.dataTransfer.setDragImage(img, 0, 0);
+      });
+      document.querySelector("#boxA").addEventListener("drag", (e) =>{
+         e.preventDefault()
+         // document.querySelector("#boxA").style.tranform=`translation(${e.clientX - document.querySelector("#boxA").style.left},${e.clientY - document.querySelector("#boxA").style.top})`
+         document.querySelector("#boxA").style.left=e.clientX-70
+         document.querySelector("#boxA").style.top=e.clientY-70
+         // document.querySelector("#boxA").style.cursor="pointer"
+      })
 
-		<!-- <img draggable="true" src="TestDD1.svg" alt="George Harrison" /> -->
-		  <div id="dropTarget"><span>And drop it here</span></div>
-    </center>
-	</body>
+      document.querySelector("#boxA").addEventListener("dragend",(e)=>{
+         
+         const minX=document.querySelector("#boxB").offsetLeft
+         const maxX=document.querySelector("#boxB").offsetLeft + document.querySelector("#boxB").offsetWidth
+         const minY=document.querySelector("#boxB").offsetTop
+         const maxY=document.querySelector("#boxB").offsetTop + document.querySelector("#boxB").offsetHeight
+
+         const cloneA=document.querySelector("#boxA").outerHTML
+         if(e.clientX>minX && e.clientX<maxX && e.clientY>minY && e.clientY<maxY){
+            document.querySelector("#boxA").remove()
+            document.querySelector("#boxB").innerHTML+=cloneA
+            document.querySelector("#boxA").style.position="relative"
+            document.querySelector("#boxA").style.left="0"
+            document.querySelector("#boxA").style.top="0"
+            document.querySelector("#boxA").setAttribute("draggable", "false")
+         }
+         
+         e.preventDefault()
+
+      })
+      document.querySelector("#boxB").addEventListener("drop",(e)=>{
+         console.log(e.dataTransfer.getData("Text"))
+         // e.preventDefault()
+      })
+      const alowDrop=(event)=>{
+         event.preventDefault();
+      }
+
+
+   </script>
 </html>

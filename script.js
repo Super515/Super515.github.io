@@ -34,8 +34,8 @@ var dragObject = new function () {
 
 
 	function dragStartEvent(e) {
-		e.dataTransfer.setData('Text', this.outerHTML
-		);
+		const node = document.createElement(this)
+		e.dataTransfer.setData('Text/html', node);
 	}
 
 
