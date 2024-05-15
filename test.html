@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .dragdemo {
+        /* float: left; */
+        padding: 10px;
+        margin: 10px;
+        background-color: #0e2e5b;
+        color: white;
+        width: 140px;
+        height: 140px;
+        opacity: 1;
+        text-align: center;
+      }
+      #boxB {
+        padding: 10px;
+        margin: 10px;
+        background-color: #b42530;
+        color: white;
+        width: 200px;
+        height: 200px;
+        text-align: center;
+      }
+      .row {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Simple drag and drop</h2>
+      <div>The blue box can be dragged into the red one.</div>
+      <div class="row">
+        <div
+          id="boxA"
+          class="dragdemo"
+          draggable="true"
+          ondragstart="return dragStart(event)"
+        >
+          <p>Drag this</p>
+          <img src="TestDD1.svg" width="50" height="50" />
+        </div>
+        <div
+          id="boxB"
+          ondragenter="return dragEnter(event)"
+          ondrop="return dragDrop(event)"
+          ondragover="return dragOver(event)"
+        >
+          And drop it here
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.getElementById("boxA").addEventListener(
+      "dragstart",
+      function (e) {
+        var hideDragImage = this.cloneNode(true);
+        hideDragImage.id = "hideDragImage-hide";
+
+        var dragImage = this.cloneNode(true);
+        dragImage.id = "draggeimage";
+        dragImage.style.position = "absolute";
+
+        hideDragImage.style.opacity = 0;
+        document.body.appendChild(hideDragImage);
+        document.body.appendChild(dragImage);
+        e.dataTransfer.setDragImage(hideDragImage, 0, 0);
+      },
+      false
+    );
+
+    document.getElementById("boxA").addEventListener(
+      "dragend",
+      function (e) {
+        var hideDragImage = document.getElementById("hideDragImage-hide");
+        var dragImage = document.getElementById("draggeimage");
+        hideDragImage.remove();
+        dragImage.remove();
+      },
+      false
+    );
+
+    document.getElementById("boxA").addEventListener("drag", (event) => {
+      dragImage = document.getElementById("draggeimage");
+      if (dragImage) {
+        dragImage.style.left = event.pageX + "px";
+        dragImage.style.top = event.pageY + "px";
+      }
+    });
+    function dragStart(ev) {
+      // Set data to be transferred
+      ev.dataTransfer.setData("Text", ev.target.getAttribute("id"));
+
+      // Set effectAllowed
+      ev.dataTransfer.effectAllowed = "move";
+
+      return true;
+    }
+    function dragEnter(ev) {
+      ev.preventDefault();
+      return true;
+    }
+
+    function dragOver(ev) {
+      return false;
+    }
+
+    function dragDrop(ev) {
+      var src = ev.dataTransfer.getData("Text");
+      ev.target.appendChild(document.getElementById(src));
+      ev.stopPropagation();
+      return false;
+    }
+  </script>
+</html>
